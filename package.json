@@ -1,0 +1,21 @@
+{
+  "name": "proj_management",
+  "version": "1.0.0",
+  "description": "a project management application ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "Learning",
+    "Backend",
+    "API"
+  ],
+  "author": "sumit thakur",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}
