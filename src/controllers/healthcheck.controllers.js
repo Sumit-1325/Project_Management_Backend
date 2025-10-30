@@ -1,6 +1,9 @@
 import { apiResponse } from "../utils/api-response.js";  
 import { apiError } from "../utils/api-error.js";
+import asyncHandler from "../utils/async-handler.js";
 
+
+/*
 const healthCheck = async (req, res) => {
     try {
         // Pass message as string, data can be the object if needed
@@ -19,5 +22,10 @@ const healthCheck = async (req, res) => {
         return res.status(500).json(response);
     }
 }
+
+*/
+const healthCheck = asyncHandler(async (req, res) => {  
+    res.status(200).json(new apiResponse(200, { data: "API is healthy" }, "Success"));
+});
 
 export { healthCheck };
