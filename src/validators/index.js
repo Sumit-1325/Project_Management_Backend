@@ -22,7 +22,7 @@ const userRegistrationValidators = () => {
             .trim()
             .notEmpty()
             .withMessage("Password field cannot be empty.")
-            .isLength({ min: 8 })
+            .isLength({ min:6})
             .withMessage("Password must be at least 8 characters long.")
 
     ]
