@@ -75,7 +75,6 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
 
 export const loginUser = asyncHandler(async (req, res, next) => {
-  console.log("Login request body:", req.body);
   const { userName, password } = req.body;
   if (!userName ) {
     return next(new apiError("Username is required", 400, []));
@@ -89,9 +88,9 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     return next(new apiError("Invalid username or password", 401, []));
   }
 
-  if (!user.isEmainlVerified) {
-    return next(new apiError("Please verify your email before logging in", 403, []));
-  }
+  // if (!user.isEmainlVerified) {
+  //   return next(new apiError("Please verify your email before logging in", 403, []));
+  // }
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {

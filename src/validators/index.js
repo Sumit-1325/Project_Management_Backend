@@ -29,4 +29,20 @@ const userRegistrationValidators = () => {
 
 }
 
-export { userRegistrationValidators };
+const userLoginValidators = () => {
+    return [
+        body("userName")
+            .trim()
+            .notEmpty()
+            .withMessage("Username field cannot be empty."),
+        body("password")
+            .trim()
+            .notEmpty()
+            .withMessage("Password field cannot be empty.")
+            .isLength({ min: 6 })
+            .withMessage("Password must be at least 6 characters long.")
+    ];
+};
+
+
+export { userRegistrationValidators , userLoginValidators};
