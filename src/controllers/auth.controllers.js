@@ -123,3 +123,33 @@ export const loginUser = asyncHandler(async (req, res, next) => {
   );
 
 });
+
+export const logoutUser = asyncHandler(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user._id,
+    {
+      $set:{
+        refreshToken: "",
+      }
+    },
+    {
+      new: true,
+    }
+  );
+  const cookieOptions = {
+    httpOnly: true,
+    secure : true,
+    expires: new Date(0), // Set the cookie to expire immediately
+  };
+
+  return res
+  .status(200)
+  .cookie("refreshToken", "", cookieOptions)
+  .cookie("accessToken", "", cookieOptions)
+  .json(
+     new apiResponse(200, null,"User logged out successfully"  ),
+  );
+
+
+  
+});
+

@@ -1,30 +1,36 @@
-import asyncHandler from "../utils/async-handler";
+import asyncHandler from "../utils/async-handler.js";
 import { apiError } from "../utils/api-error.js";
-import {User} from "../models/user.models.js";
+import { User } from "../models/user.models.js";
 import jwt from "jsonwebtoken";
 
-
-export const verifyJwt = asyncHandler(async (req , res, next) => {
-    const token = (req.cookies?.accessToken || req.header?("Authorization")?.replace("Bearer ", ""): null)
-
-    if(!token){
-        return (new apiError("Authentication token is missing" , 401));
-    }
-
+export const verifyJwt = asyncHandler(async (req, res, next) => {
     try {
-        const decodedToken = jwt.verify(token , process.env.JWT_ACCESS_SECRET);
-        const user = await User.findById(decodedToken.id).select("-password -refreshToken -temporaryToken");
+       
+        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
 
-        if(!user){
-            return next(new apiError("User associated with this token no longer exists" , 401));
+        if (!token) {
+            throw new apiError("Authentication token is missing", 401);
         }
+
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+        
+        const user = await User.findById(decodedToken?._id || decodedToken?.id).select("-password -refreshToken -temporaryToken");
+
+        if (!user) {
+            throw new apiError("Invalid Access Token", 401);
+        }
+
         req.user = user;
         next();
-        
+
     } catch (error) {
-        throw new apiError("Invalid or expired authentication token" , 401);
+        console.log("JWT Verification Failed:", error.message);
+
+        if (error instanceof apiError) {
+            throw error;
+        }
+
+        throw new apiError(error?.message || "Invalid authentication token", 401);
     }
-
-
-
 });
